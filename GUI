@@ -1,0 +1,83 @@
+import javax.swing.*;
+
+import java.awt.event.*;
+
+import java.awt.*;
+
+import java.sql.*;
+
+ 
+
+public class SwingSearchApp extends JFrame implements ActionListener {
+
+ 
+
+    JLabel lb, lb1, 
+
+    JTextField tf, tf
+
+    JButton btn;
+
+ 
+
+
+
+    SwingSearchApp() {
+
+        //Providing Title
+
+        super("WAME Search Engine");
+
+        lb = new JLabel("Enter Query:");
+
+        lb.setBounds(20, 20, 100, 20);
+
+        tf = new JTextField(20);
+
+        tf.setBounds(130, 20, 200, 20);
+
+ 
+
+        btn = new JButton("Search");
+
+        btn.setBounds(50, 50, 100, 20);
+
+        btn.addActionListener(this);
+
+ 
+
+        lb1 = new JLabel("Fetching Query Information");
+
+        lb1.setBounds(30, 80, 450, 30);
+
+        lb1.setForeground(Color.red);
+
+        lb1.setFont(new Font("Serif", Font.BOLD, 20));
+
+        setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setSize(500, 500);
+
+
+
+        add(lb);
+
+        add(tf);
+
+        add(btn);
+        
+        add(lb1);
+
+
+    }
+
+ 
+
+    public void actionPerformed(ActionEvent e) {
+
+        
+            ResultSet rs = st.executeQuery();
+
+            JOptionPane.showMessageDialog(null, "");
