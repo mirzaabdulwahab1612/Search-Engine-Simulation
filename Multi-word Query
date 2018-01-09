@@ -1,0 +1,38 @@
+ public static LinkedHashSet<String> search(String word[], ConcurrentMap map) {
+        LinkedHashSet<String> s1 = new LinkedHashSet<>();
+        LinkedHashSet<String> s2 = new LinkedHashSet<>();
+        int noOfWord = word.length;
+        boolean flag = true;
+        for(int i = 0;i < noOfWord; i++){
+            if(map.containsKey(word[i])){
+                ArrayList<Page> p = (ArrayList)map.get(word[i]);
+                Collections.sort(p,Page.pRank);
+                int n = p.size();
+                if(n>1500){
+                    n=1500;
+                }
+                for (int j = 0; j < n; j++) {    
+                    s1.add(p.get(j).getTitle());
+                }
+                if(flag){
+                    s2.addAll(s1);
+                    s1.clear();
+                    flag = false;
+                }else{
+                    s2.addAll((LinkedHashSet<String>) intersection(s1,s2));
+                    s1.clear();
+                }
+            }
+        }
+        return s2;
+    }
+    @SuppressWarnings("unchecked")
+    private static Set<String> intersection(LinkedHashSet<String> setA, LinkedHashSet<String> setB){
+        LinkedHashSet <String> setC = new LinkedHashSet<>();
+        setC.addAll(setA);
+        setA.stream().filter((str) -> (!setB.contains(str))).forEachOrdered((str) -> {
+            setC.remove(str);
+        });    
+        return setC;
+    }   
+}
