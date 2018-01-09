@@ -1,0 +1,52 @@
+@Override   
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+        if (qName.equalsIgnoreCase("text")) {
+            text = text.replaceAll("(?s)\\{\\{(.+?)\\}\\}", " "); //removing links
+            text = text.replaceAll("\\|", " "); //removing vertical lines
+            text = text.replaceAll("-", " "); //removing dashes
+            text = text.replaceAll("\\n", " "); //removing new lines
+            text = text.replaceAll("[^a-zA-Z0-9- \\s]", " ");//removing alphanumeric characters
+            text = text.replaceAll("\\s+", " "); //removing multiple spaces
+            text = text.toLowerCase();
+            String[] words = new String[0];
+            words = text.split(" ");
+            for (String word : words) {
+                if(heading.toLowerCase().contains(word)){
+                    trying.setHeading(true);
+                }
+                else
+                    trying.setHeading(false);      
+                if(" ".equals(word) || "the".equals(word) || "is".equals(word) || "which".equals(word) || "a".equals(word) || "about".equals(word) || "above".equals(word) || "after".equals(word) || "again".equals(word) || "against".equals(word)||
+                    "all".equals(word) || "am".equals(word) || "an".equals(word) || "and".equals(word) || "any".equals(word) || "are".equals(word) || "as".equals(word) || "at".equals(word) || "be".equals(word) || "because".equals(word) ||
+                    "been".equals(word) || "before".equals(word) || "being".equals(word) || "below".equals(word) || "between".equals(word) || "both".equals(word) || "but".equals(word) || "by".equals(word) ||
+                    "could".equals(word) ||"did".equals(word) ||"do".equals(word) ||"does".equals(word) ||"doing".equals(word) ||"down".equals(word) ||"during".equals(word) ||"each".equals(word) ||"few".equals(word) ||
+                    "for".equals(word) || "from".equals(word) || "further".equals(word) ||"had".equals(word) ||"has".equals(word) || "have".equals(word) || "having".equals(word) || "he".equals(word) || "her".equals(word) ||
+                    "here".equals(word) ||"herself".equals(word) ||"him".equals(word) ||"himself".equals(word) ||"his".equals(word) ||"how".equals(word) ||"I".equals(word) || "if".equals(word) || "in".equals(word) ||
+                    "into".equals(word) || "is".equals(word) || "it".equals(word) || "itself".equals(word) ||"let".equals(word) ||"me".equals(word) ||"more".equals(word) ||"most".equals(word) ||"my".equals(word) ||"myself".equals(word) ||
+                    "nor".equals(word) ||"of".equals(word) ||"on".equals(word) ||"once".equals(word) || "only".equals(word) ||"or".equals(word) || "other".equals(word) || "ought".equals(word) || "our".equals(word) ||
+                    "ourselves".equals(word) || "out".equals(word) || "over".equals(word) || "own".equals(word) || "same".equals(word) || "she".equals(word) || "should".equals(word) ||
+                    "so".equals(word) || "some".equals(word) || "such".equals(word) || "than".equals(word) || "that".equals(word) ||"the".equals(word) || "their".equals(word) || "them".equals(word) ||
+                    "themselves".equals(word) || "then".equals(word) || "there".equals(word) || "these".equals(word) || "they".equals(word) || "this".equals(word) || "those".equals(word) ||
+                    "through".equals(word) || "to".equals(word) || "too".equals(word) || "under".equals(word) || "until".equals(word) || "up".equals(word) || "very".equals(word) || "was".equals(word) ||
+                    "we".equals(word) ||"were".equals(word) || "what".equals(word) ||"when".equals(word) ||"where".equals(word) ||"which".equals(word) ||"while".equals(word) ||"who".equals(word) || "whom".equals(word) ||
+                    "why".equals(word) ||"with".equals(word) ||"would".equals(word) || "you".equals(word) || "your".equals(word) || "yourself".equals(word) || "yourselves".equals(word))
+                {        
+                    //do nothing
+                }
+                else if (ht.containsKey(word)) {
+                    ht.get(word).add(trying);
+                }
+                else {
+                    ArrayList<TitleId> temp = new ArrayList<>();
+                    temp.add(trying);
+                    ht.put(word, temp);      
+                }
+            }
+            trying = new TitleId();
+            id = 0;
+            text = "";
+            title = "";
+            bText = false;
+            heading = "";
+            take = true;
+        }
