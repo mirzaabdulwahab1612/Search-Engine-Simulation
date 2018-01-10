@@ -1,0 +1,61 @@
+   public static void main(String[] args) {
+        /*try {
+            File inputFile = new File("C:\\Users\\HP\\Desktop\\NUST\\3rd Semester\\Data Structures & Algorithms\\Project\\file.xml");
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            SAXParser saxParser = factory.newSAXParser();
+            UserHandler userhandler = new UserHandler();
+            saxParser.parse(inputFile, userhandler);
+            userhandler.makeHash();
+            userhandler.closeFiles();
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
+        DB db = DBMaker.fileDB("D:\\netbeans\\NetBeans 8.2\\bin\\latest\\rankhash.db").make();
+        ConcurrentMap map1 = db.hashMap("rankhash").open();
+        Scanner in = new Scanner(System.in);
+        System.out.print("Enter your Query: ");
+        String query = in.nextLine();
+        query = query.toLowerCase();
+        String[] word = query.split(" ");
+        if(word.length > 1){
+            System.out.println("Results are as follow:- ");
+            long start = System.currentTimeMillis();
+            long end = 0;
+            int count = 0;
+            LinkedHashSet<String> res = search(word,map1);
+            for (Iterator it = res.iterator(); it.hasNext();) {
+                String str = (String) it.next();
+                if(str.equals("")){
+                        continue;
+                }
+                count++;
+                System.out.println("https://simple.wikipedia.org/wiki/" + str.replace(" ", "_"));
+            }
+            end = System.currentTimeMillis();
+            System.out.println(count + " results returned in " +(end - start) + " milliseconds");
+        }
+        else{
+            System.out.println("Results are as follow:- ");
+            long start = System.currentTimeMillis();
+            long end = 0;
+            int count = 0;
+            try{
+                ArrayList<Page> p = (ArrayList)map1.get(query);
+                Collections.sort(p,Page.pRank);
+                for(int i = 0; i < p.size(); i++){
+                    if(count >= 1000){
+                        break;
+                    }
+                    if(p.get(i).getTitle().equals("")){
+                        continue;
+                    }
+                    count++;   
+                    System.out.println("https://simple.wikipedia.org/wiki/" + p.get(i).getTitle().replace(" ", "_") );
+                }
+                end = System.currentTimeMillis();
+            }catch(Exception e){
+                System.out.println("No such word found");
+            }
+            System.out.println(count + " results returned in " +(end - start) + " milliseconds");
+        }
+   }     
